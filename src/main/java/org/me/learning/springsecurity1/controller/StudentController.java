@@ -27,7 +27,7 @@ public class StudentController {
     public List <Student> getStudents(){
       return students;
     }
-//    now here where CSRF Token take place we do not use it for get , there is better alternative to this we will discuss it later 
+//    now here where CSRF Token take place we do not use it for get , there is better alternative to this we will discuss it later
 //    we have to pass a Key and a Value , we can get it from the browser or pass it in the code here
 @GetMapping("/csrf-token")
 public CsrfToken  getToken(HttpServletRequest request){
@@ -39,5 +39,6 @@ public CsrfToken  getToken(HttpServletRequest request){
       students.add(student);
       return student;
     }
+//     before stating with Spring Security Configuration , i have to explain everything in my ipad as usual  (the last subject)
 
 }
