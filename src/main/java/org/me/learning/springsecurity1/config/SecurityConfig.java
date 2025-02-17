@@ -15,6 +15,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.build();
-//        we are saying toi spring here do not go to the default use this , and the security is not working now
+//        we are saying to spring here do not go to the default use this , and the security is not working now
     }
 }
