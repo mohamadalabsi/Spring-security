@@ -31,8 +31,8 @@ public class StudentController {
     public List <Student> getStudents(){
       return students;
     }
-//!    now here where CSRF Token take place we do not use it for get , there is better alternative to this we will discuss it later
-//!    we have to pass a Key and a Value , we can get it from the browser or pass it in the code here
+//!    now here where CSRF Token take place we do not use it for get , there is better alternative to this we will discuss it later , it is in  SecurityConfig class
+//!    we have to pass a Key and a Value , we can get it from the browser or pass it in the code here , by default it is enabled , and we use it for these APIs
 @GetMapping("/csrf-token")
 public CsrfToken  getToken(HttpServletRequest request){
     return (CsrfToken) request.getAttribute("_csrf");  //getAttribute is type Object , so we have to typecasting so it can be as CsrfToken , i will come back for this later
