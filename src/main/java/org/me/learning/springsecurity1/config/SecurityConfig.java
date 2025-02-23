@@ -21,13 +21,16 @@ public class SecurityConfig {
         httpSecurity.authorizeHttpRequests(request -> request.anyRequest().authenticated()); // no one should access the page without authentication
 //        httpSecurity.formLogin(Customizer.withDefaults()); // enabling the formLogin , if i want to do with postman i will get literally a form login
         httpSecurity.httpBasic(Customizer.withDefaults());
-//        we already taked about different ways to handel the csrf Token , the other way is to make Http session stateless
+//        we already took about different ways to handel the csrf Token , the other way is to make Http session stateless
         httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//        we have to disable the formLogin code up there , we will get a popup 
+//        we have to disable the formLogin code up there , we will get a popup , if we dont we will get the form everytime even if i logged in
+//        we using lambda now , there is another way but this is much easier , and because Customizer is FunctionalInterface and not the default one we can use lambda with it
+
 
         return httpSecurity.build();
 //        we are saying to spring here do not go to the default use this , and the security is not working now
 //         and now we have to secure it , implement that layer , i will do it before return statement
+
 
     }
 }
