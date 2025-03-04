@@ -31,7 +31,7 @@ public class SecurityConfig {
 //        we are saying to spring here do not go to the default use this , and the security is not working now
 //         and now we have to secure it , implement that layer , i will do it before return statement
 
-//        ! we want to use a DB and use username and password like a real user
+//        ! we want to use a DB and use username and password like a real user  
 
     }
 }
