@@ -77,4 +77,9 @@ public class SecurityConfig {
         provider.setUserDetailsService(userDetailsService);
         return provider;
     }
+//    ! now we have to encrypt the passwords , there is multiple ways
+//    1. plain -> cipher
+//    2. plain -> hash is better , from the plain text zou can get the text but from the hash zou can not get the plain text
+//    plain -> hash1 -> hash2 ...   the website to see how it works is https://www.browserling.com/tools/bcrypt
+
 }
