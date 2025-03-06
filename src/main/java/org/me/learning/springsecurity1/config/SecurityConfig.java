@@ -1,6 +1,7 @@
 package org.me.learning.springsecurity1.config;
 
 
+import org.me.learning.springsecurity1.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Autowired
-    private  UserDetailsService userDetailsService;
+    private MyUserDetailsService userDetailsService; // we can inject it and spring will handel it but will be the default , this is an interface we have to create a class that implement it and then customize it
 
 //    we have to use beans and return them
     @Bean
@@ -47,7 +48,7 @@ public class SecurityConfig {
 
     }
 
-    // !       now these just for testing and we are not using it
+    // !       now these just for testing and we are not using it down there is the real thing
 
 //    @Bean
 //    public UserDetailsService userDetailsService (){
