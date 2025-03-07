@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -67,17 +68,21 @@ public class SecurityConfig {
 //        return new InMemoryUserDetailsManager(user1,user2);
 //    }
 
-    //        ! we want to use a DB and use username and password like a real user
+    //        ! we want to use a DB and use username and password like a real user without hashing or anything
 
 
+    @Bean
     public AuthenticationProvider authenticationProvider(){
 //        the same problem as above with interface
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance()); // without password encoder , just for testing
+//        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance()); // without password encoder , just for testing , return the password without hashing
+        provider.setPasswordEncoder(new BCryptPasswordEncoder(12)); // with
         provider.setUserDetailsService(userDetailsService);
         return provider;
     }
-//    ! now we have to encrypt the passwords , there is multiple ways
+
+
+//    ! now we have to encrypt the passwords , there is multiple ways , and also register
 //    1. plain -> cipher
 //    2. plain -> hash is better , from the plain text zou can get the text but from the hash zou can not get the plain text
 //    plain -> hash1 -> hash2 ...   the website to see how it works is https://www.browserling.com/tools/bcrypt
