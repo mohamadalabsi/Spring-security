@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 @Entity
 public class Users {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY) i will come back for this later 
+//    @GeneratedValue(strategy = GenerationType.IDENTITY) this should be written if u want to create the table from here but if u have the table already u should specify it in the DB
     private int id;
     private String username ;
     private String password ;
