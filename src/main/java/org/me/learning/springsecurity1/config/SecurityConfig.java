@@ -5,9 +5,11 @@ import org.me.learning.springsecurity1.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -31,7 +33,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.csrf(customizer ->customizer.disable()); // to disable the csrf token
-        httpSecurity.authorizeHttpRequests(request -> request.anyRequest().authenticated()); // no one should access the page without authentication
+        httpSecurity.authorizeHttpRequests(request -> request
+                .requestMatchers("register","login").permitAll() //this mean these two requests should not be authenticated , i can access them without username and pass , makes sense
+                .anyRequest().authenticated()); // any other request should be authenticated no one should access the page without authentication
+
+
 //        httpSecurity.formLogin(Customizer.withDefaults()); // enabling the formLogin , if i want to do with postman i will get literally a form login
         httpSecurity.httpBasic(Customizer.withDefaults());
 //        we already took about different ways to handel the csrf Token , the other way is to make Http session stateless , it will be updated after refreshing
@@ -82,9 +88,18 @@ public class SecurityConfig {
     }
 
 
-//    ! now we have to encrypt the passwords , there is multiple ways , and also register
+//    ! now we have to encrypt the passwords , there is multiple ways , and also register it is above , just aline of code here
 //    1. plain -> cipher
 //    2. plain -> hash is better , from the plain text zou can get the text but from the hash zou can not get the plain text
 //    plain -> hash1 -> hash2 ...   the website to see how it works is https://www.browserling.com/tools/bcrypt
+
+
+
+//    !!!    Spring Security Project Setup for JWT
+    @Bean
+    public AuthenticationManager authenticationManager (AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+
+    }
 
 }

@@ -16,10 +16,15 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public Users register (@RequestBody Users user){
+    public Users register (@RequestBody Users user) {
 
         return userService.register(user);
-
-
     }
+
+    @PostMapping("/login")
+    public String login (@RequestBody Users user){
+        System.out.println(user);
+        return userService.verify(user);
+
+        }
 }
