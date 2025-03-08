@@ -1,6 +1,7 @@
 package org.me.learning.springsecurity1.config;
 
 
+import org.me.learning.springsecurity1.filter.JWTFilter;
 import org.me.learning.springsecurity1.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration // spring will know this is a configuration file
 @EnableWebSecurity // i do not want to use the default spring security Configuration so i have to use this annotation and implement it here
@@ -28,6 +30,8 @@ public class SecurityConfig {
     @Autowired
     private MyUserDetailsService userDetailsService; // we can inject it and spring will handel it but will be the default , this is an interface we have to create a class that implement it and then customize it
 
+    @Autowired
+    private  JWTFilter jwtFilter ;
 //    we have to use beans and return them
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -45,7 +49,8 @@ public class SecurityConfig {
 //        we have to disable the formLogin code up there , we will get a popup , if we dont we will get the form everytime even if i logged in
 //        we using lambda now , there is another way but this is much easier , and because Customizer is FunctionalInterface and not the default one we can use lambda with it
 
-
+//       ! here add the filter
+        httpSecurity.addFilterBefore(jwtFilter , UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
 //        we are saying to spring here do not go to the default use this , and the security is not working now
 //         and now we have to secure it , implement that layer , i will do it before return statement
@@ -74,7 +79,7 @@ public class SecurityConfig {
 //        return new InMemoryUserDetailsManager(user1,user2);
 //    }
 
-    //        ! we want to use a DB and use username and password like a real user without hashing or anything
+    //        ! we want to use a DB and use username and password like a real user without hashing or anything for sign in
 
 
     @Bean
@@ -95,10 +100,13 @@ public class SecurityConfig {
 
 
 
-//    !!!    Spring Security Project Setup for JWT
+//    !!!    Spring Security Project Setup for JWT  https://jwt.io/
     @Bean
     public AuthenticationManager authenticationManager (AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
+
+
+// !        now we have to return to securityFilterChain to add a filter for JWT before the filter we already have (username password) , it should be before build
 
     }
 
