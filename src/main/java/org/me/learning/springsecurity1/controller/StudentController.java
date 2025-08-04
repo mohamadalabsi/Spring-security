@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+//? step 2 csrf token
 
 
 
-//! some notes
-//! i have to finish spring security then microservices with that i will be finishing 70% form spring framework , all is explained in the ipad (form)
 @RestController
 public class StudentController {
 
@@ -36,7 +35,7 @@ public class StudentController {
 @GetMapping("/csrf-token")
 public CsrfToken  getToken(HttpServletRequest request){
     return (CsrfToken) request.getAttribute("_csrf");  //getAttribute is type Object , so we have to typecasting so it can be as CsrfToken , i will come back for this later
-}
+} // it will return a token , we use it in the header section in post , put and delete mapping (methods)
 
     @PostMapping ("/student")
     public Student addStudent(@RequestBody Student student){

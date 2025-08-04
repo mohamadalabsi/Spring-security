@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
+//    ? step 1  , the session id will not change even if u refresh the page
 //    to get the session ID
     @GetMapping
     public String hello(HttpServletRequest request) {
