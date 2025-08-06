@@ -32,6 +32,10 @@ public class StudentController {
     }
 //!    now here where CSRF Token take place we do not use it for get , there is better alternative to this we will discuss it later , it is in  SecurityConfig class
 //!    we have to pass a Key and a Value , we can get it from the browser or pass it in the code here , by default it is enabled , and we use it for these APIs
+
+//     one of the first things we had to deal with , lets say i have a session id and using a website and then i downloaded a crack version of something , they want to get the session id
+//     and if they can get it then they can access the website i am using as me and steal stuff , so here csrf token takes place and prevent that , this is the first way
+//     second way we can make out session stateless so it will change always and we do not have to worry about the session id
 @GetMapping("/csrf-token")
 public CsrfToken  getToken(HttpServletRequest request){
     return (CsrfToken) request.getAttribute("_csrf");  //getAttribute is type Object , so we have to typecasting so it can be as CsrfToken , i will come back for this later
@@ -42,6 +46,6 @@ public CsrfToken  getToken(HttpServletRequest request){
       students.add(student);
       return student;
     }
-// !    after  finishing some videos  , i have to explain them in my ipad as usual
+
 
 }

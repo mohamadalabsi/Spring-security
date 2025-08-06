@@ -23,6 +23,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+//? step 3 , after csrf token , we can do a lot of things like the things bellow (our own settings )
+
 @Configuration // spring will know this is a configuration file
 @EnableWebSecurity // i do not want to use the default spring security Configuration so i have to use this annotation and implement it here
 public class SecurityConfig {
@@ -36,13 +38,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
+//        ?  1
+//        return httpSecurity.build();
+//        we are saying to spring here do not go to the default use this , and the security is not working now , thats why we did not get the login form
+
+
+
+//        ?  2
+//        httpSecurity.csrf(customizer ->customizer.disable());
+//        httpSecurity.authorizeHttpRequests(request -> request.anyRequest().authenticated()); // no access for anyone
+//        httpSecurity.formLogin(Customizer.withDefaults()); // enabling the formLogin , use the username and pass in properties file
+//        httpSecurity.httpBasic(Customizer.withDefaults()); //to do it also with postman
+//        httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // to make it stateless like we said
+//        return httpSecurity.build();
+
+
         httpSecurity.csrf(customizer ->customizer.disable()); // to disable the csrf token
         httpSecurity.authorizeHttpRequests(request -> request
                 .requestMatchers("register","login").permitAll() //this mean these two requests should not be authenticated , i can access them without username and pass , makes sense
                 .anyRequest().authenticated()); // any other request should be authenticated no one should access the page without authentication
 
 
-//        httpSecurity.formLogin(Customizer.withDefaults()); // enabling the formLogin , if i want to do with postman i will get literally a form login
         httpSecurity.httpBasic(Customizer.withDefaults());
 //        we already took about different ways to handel the csrf Token , the other way is to make Http session stateless , it will be updated after refreshing
         httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
@@ -52,13 +68,15 @@ public class SecurityConfig {
 //       ! here add the filter
         httpSecurity.addFilterBefore(jwtFilter , UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
-//        we are saying to spring here do not go to the default use this , and the security is not working now
 //         and now we have to secure it , implement that layer , i will do it before return statement
 
 
 
 
     }
+
+
+ //    ? 3
 
     // !       now these just for testing and we are not using it down there is the real thing
 
@@ -79,16 +97,21 @@ public class SecurityConfig {
 //        return new InMemoryUserDetailsManager(user1,user2);
 //    }
 
+
+
+
+//    ? 4
+
     //        ! we want to use a DB and use username and password like a real user without hashing or anything for sign in
 
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
 //        the same problem as above with interface
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(); // this is for db
 //        provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance()); // without password encoder , just for testing , return the password without hashing
         provider.setPasswordEncoder(new BCryptPasswordEncoder(12)); // with
-        provider.setUserDetailsService(userDetailsService);
+        provider.setUserDetailsService(userDetailsService); // we use userDetailsService to verify it because we changed the authenticationProvider , we are not using the default one
         return provider;
     }
 
